@@ -1,17 +1,49 @@
 import { HardhatUserConfig } from 'hardhat/config';
 import '@nomicfoundation/hardhat-toolbox';
 import '@nomiclabs/hardhat-solhint';
+import * as dotenv from 'dotenv';
+
+dotenv.config();
 
 const config: HardhatUserConfig = {
-  solidity: '0.8.20',
+  solidity: {
+    version: '0.8.23',
+    settings: {
+      optimizer: {
+        enabled: true,
+        runs: 200,
+      },
+    },
+  },
   defaultNetwork: 'hardhat',
   networks: {
-    goerli: {
-      url: process.env.GOERLI_URL || '',
-      accounts: [process.env.PRIVATE_KEY || ''],
-    },
     hardhat: {
       chainId: 31337,
+    },
+    goerli: {
+      url: process.env.GOERLI_URL || '',
+      chainId: 5,
+      accounts: [process.env.PRIVATE_KEY || ''],
+    },
+    mumbai: {
+      url: 'https://polygon-mumbai.blockpi.network/v1/rpc/public',
+      chainId: 80001,
+      accounts: [process.env.PRIVATE_KEY || ''],
+    },
+    fuji: {
+      url: 'https://api.avax-test.network/ext/bc/C/rpc',
+      chainId: 43113,
+      accounts: [process.env.PRIVATE_KEY || ''],
+    },
+    optimismGoerli: {
+      url: 'https://optimism-goerli.publicnode.com',
+      chainId: 420,
+      accounts: [process.env.PRIVATE_KEY || ''],
+    },
+    arbitrumGoerli: {
+      url: 'https://arbitrum-goerli.public.blastapi.io',
+      chainId: 421613,
+      accounts: [process.env.PRIVATE_KEY || ''],
     },
     arbitrumOne: {
       chainId: 42161,
@@ -28,7 +60,18 @@ const config: HardhatUserConfig = {
       mainnet: process.env.ETHERSCAN_API_KEY || '',
       arbitrumOne: process.env.ARBISCAN_API_KEY || '',
       optimisticEthereum: process.env.OPTIMISTIC_ETHERSCAN_API_KEY || '',
+      fuji: 'fuji',
     },
+    customChains: [
+      {
+        network: 'fuji',
+        chainId: 43113,
+        urls: {
+          apiURL: 'https://api.routescan.io/v2/network/testnet/evm/43113/etherscan',
+          browserURL: 'https://avalanche.testnet.routescan.io',
+        },
+      },
+    ],
   },
 };
 
