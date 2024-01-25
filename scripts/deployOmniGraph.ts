@@ -67,6 +67,11 @@ async function main() {
   await omniGraph.waitForDeployment();
 
   console.log(`OmniGraph deployed on ${network.name} to ${omniGraph.target}`);
+  console.log(
+    `To verify contract run: npx hardhat verify --network ${network.name} ${
+      omniGraph.target
+    } ${deployArgs.join(' ')}`,
+  );
 }
 
 main().catch((error) => {

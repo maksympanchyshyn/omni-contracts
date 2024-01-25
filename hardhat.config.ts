@@ -26,7 +26,7 @@ const config: HardhatUserConfig = {
       accounts: [process.env.PRIVATE_KEY || ''],
     },
     mumbai: {
-      url: 'https://polygon-mumbai.blockpi.network/v1/rpc/public',
+      url: process.env.MUMBAI_RPC_URL,
       chainId: 80001,
       accounts: [process.env.PRIVATE_KEY || ''],
     },
@@ -61,6 +61,7 @@ const config: HardhatUserConfig = {
       arbitrumOne: process.env.ARBISCAN_API_KEY || '',
       optimisticEthereum: process.env.OPTIMISTIC_ETHERSCAN_API_KEY || '',
       fuji: 'fuji',
+      mumbai: process.env.POLYGONSCAN_API_KEY || 'mumbai',
     },
     customChains: [
       {
@@ -69,6 +70,14 @@ const config: HardhatUserConfig = {
         urls: {
           apiURL: 'https://api.routescan.io/v2/network/testnet/evm/43113/etherscan',
           browserURL: 'https://avalanche.testnet.routescan.io',
+        },
+      },
+      {
+        network: 'mumbai',
+        chainId: 80001,
+        urls: {
+          apiURL: 'https://api-testnet.polygonscan.com/api',
+          browserURL: 'https://mumbai.polygonscan.com/',
         },
       },
     ],
