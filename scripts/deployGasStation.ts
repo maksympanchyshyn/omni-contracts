@@ -16,7 +16,7 @@ async function main() {
   const gasStation = await ethers.deployContract('GasStation', [lzEndpoint]);
   await gasStation.waitForDeployment();
 
-  console.log(`OmniGraph deployed on ${network.name} to ${gasStation.target}`);
+  console.log(`GasStation deployed on ${network.name} to ${gasStation.target}`);
   console.log(
     `To verify contract run: npx hardhat verify --network ${network.name} ${gasStation.target} ${lzEndpoint}`,
   );
