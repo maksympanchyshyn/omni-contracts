@@ -36,4 +36,16 @@ export const LZ_CHAINS: LzChain[] = [
     lzChainId: 10132,
     lzEndpoint: '0xae92d5aD7583AD66E49A0c67BAd18F6ba52dDDc1',
   },
+  {
+    name: 'Arbitrum One',
+    chainId: 42161,
+    lzChainId: 110,
+    lzEndpoint: '0x3c2269811836af69497E5F486A85D7316753cf62',
+  },
+  {
+    name: 'Optimism',
+    chainId: 10,
+    lzChainId: 111,
+    lzEndpoint: '0x3c2269811836af69497E5F486A85D7316753cf62',
+  },
 ];

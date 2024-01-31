@@ -11,7 +11,7 @@ const config: HardhatUserConfig = {
     settings: {
       optimizer: {
         enabled: true,
-        runs: 200,
+        runs: 1000,
       },
     },
   },
@@ -25,17 +25,17 @@ const config: HardhatUserConfig = {
       chainId: 5,
       accounts: [process.env.PRIVATE_KEY || ''],
     },
-    mumbai: {
+    polygonMumbai: {
       url: process.env.MUMBAI_RPC_URL,
       chainId: 80001,
       accounts: [process.env.PRIVATE_KEY || ''],
     },
-    fuji: {
+    avalancheFujiTestnet: {
       url: 'https://api.avax-test.network/ext/bc/C/rpc',
       chainId: 43113,
       accounts: [process.env.PRIVATE_KEY || ''],
     },
-    optimismGoerli: {
+    optimisticGoerli: {
       url: 'https://optimism-goerli.publicnode.com',
       chainId: 420,
       accounts: [process.env.PRIVATE_KEY || ''],
@@ -47,7 +47,12 @@ const config: HardhatUserConfig = {
     },
     arbitrumOne: {
       chainId: 42161,
-      url: process.env.ARBITRUM_ONE_URL || '',
+      url: process.env.ARBITRUM_ONE_URL || 'https://arbitrum.llamarpc.com',
+      accounts: [process.env.PRIVATE_KEY || ''],
+    },
+    optimisticEthereum: {
+      chainId: 10,
+      url: process.env.OPTIMISM_URL || 'https://mainnet.optimism.io',
       accounts: [process.env.PRIVATE_KEY || ''],
     },
   },
@@ -60,27 +65,9 @@ const config: HardhatUserConfig = {
       mainnet: process.env.ETHERSCAN_API_KEY || '',
       arbitrumOne: process.env.ARBISCAN_API_KEY || '',
       optimisticEthereum: process.env.OPTIMISTIC_ETHERSCAN_API_KEY || '',
-      fuji: 'fuji',
-      mumbai: process.env.POLYGONSCAN_API_KEY || 'mumbai',
+      avalancheFujiTestnet: 'fuji',
+      polygonMumbai: process.env.POLYGONSCAN_API_KEY || 'mumbai',
     },
-    customChains: [
-      {
-        network: 'fuji',
-        chainId: 43113,
-        urls: {
-          apiURL: 'https://api.routescan.io/v2/network/testnet/evm/43113/etherscan',
-          browserURL: 'https://avalanche.testnet.routescan.io',
-        },
-      },
-      {
-        network: 'mumbai',
-        chainId: 80001,
-        urls: {
-          apiURL: 'https://api-testnet.polygonscan.com/api',
-          browserURL: 'https://mumbai.polygonscan.com/',
-        },
-      },
-    ],
   },
 };
 

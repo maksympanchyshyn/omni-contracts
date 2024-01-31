@@ -1,18 +1,19 @@
 import hre, { ethers } from 'hardhat';
+import { Network } from 'hardhat/types';
 
 import { LZ_CHAINS } from '../constants';
 
-const getLzEndpointByChain = (chainName: string) => {
-  const lzChain = LZ_CHAINS.find((i) => i.name === chainName);
+const getLzEndpoint = (network: Network) => {
+  const lzChain = LZ_CHAINS.find((i) => i.chainId === network.config.chainId);
   if (!lzChain) {
-    throw new Error(`Network ${chainName} missing LayerZero settings`);
+    throw new Error(`Missing LZ Endpoint for chainId ${network.config.chainId} (${network.name})`);
   }
   return lzChain.lzEndpoint;
 };
 
 async function main() {
   const network = hre.network;
-  const lzEndpoint = getLzEndpointByChain(network.name);
+  const lzEndpoint = getLzEndpoint(network);
   const gasStation = await ethers.deployContract('GasStation', [lzEndpoint]);
   await gasStation.waitForDeployment();
 
