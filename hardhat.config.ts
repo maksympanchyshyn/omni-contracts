@@ -21,12 +21,12 @@ const config: HardhatUserConfig = {
       chainId: 31337,
     },
     goerli: {
-      url: process.env.GOERLI_URL || '',
+      url: process.env.GOERLI_RPC || '',
       chainId: 5,
       accounts: [process.env.PRIVATE_KEY || ''],
     },
     polygonMumbai: {
-      url: process.env.MUMBAI_RPC_URL,
+      url: process.env.MUMBAI_RPC,
       chainId: 80001,
       accounts: [process.env.PRIVATE_KEY || ''],
     },
@@ -47,12 +47,12 @@ const config: HardhatUserConfig = {
     },
     arbitrumOne: {
       chainId: 42161,
-      url: process.env.ARBITRUM_ONE_URL || 'https://arbitrum.llamarpc.com',
+      url: process.env.ARBITRUM_ONE_RPC || 'https://arbitrum.llamarpc.com',
       accounts: [process.env.PRIVATE_KEY || ''],
     },
     optimisticEthereum: {
       chainId: 10,
-      url: process.env.OPTIMISM_URL || 'https://mainnet.optimism.io',
+      url: process.env.OPTIMISM_RPC || 'https://mainnet.optimism.io',
       accounts: [process.env.PRIVATE_KEY || ''],
     },
   },
