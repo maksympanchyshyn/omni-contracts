@@ -13,23 +13,23 @@ contract GasStation is NonblockingLzApp {
   constructor(address _lzEndpoint) NonblockingLzApp(_lzEndpoint) {}
 
   function estimateSendFee(
-    uint16 dstChainId,
-    bytes memory payload,
-    bytes memory adapterParams
+    uint16 _dstChainId,
+    bytes memory _payload,
+    bytes memory _adapterParams
   ) public view virtual returns (uint nativeFee, uint zroFee) {
-    return lzEndpoint.estimateFees(dstChainId, address(this), payload, false, adapterParams);
+    return lzEndpoint.estimateFees(_dstChainId, address(this), _payload, false, _adapterParams);
   }
 
   function refuelGas(
-    uint16 dstChainId,
-    bytes memory payload,
-    bytes memory adapterParams
+    uint16 _dstChainId,
+    bytes memory _payload,
+    bytes memory _adapterParams
   ) public payable virtual {
-    _checkGasLimit(dstChainId, 0, adapterParams, 0);
-    (uint nativeFee, ) = estimateSendFee(dstChainId, payload, adapterParams);
+    _checkGasLimit(_dstChainId, 0, _adapterParams, 0);
+    (uint nativeFee, ) = estimateSendFee(_dstChainId, _payload, _adapterParams);
     require(msg.value >= nativeFee, 'Not enough gas to send');
 
-    _lzSend(dstChainId, payload, payable(msg.sender), address(0x0), adapterParams, nativeFee);
+    _lzSend(_dstChainId, _payload, payable(msg.sender), address(0x0), _adapterParams, nativeFee);
   }
 
   function withdraw() public payable onlyOwner {

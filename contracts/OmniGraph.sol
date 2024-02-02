@@ -49,28 +49,15 @@ contract OmniGraph is ONFT721, ERC721Enumerable {
   event MintFeeChanged(uint256 indexed oldMintFee, uint256 indexed newMintFee);
   event BridgeFeeChanged(uint256 indexed oldBridgeFee, uint256 indexed newBridgeFee);
   event FeeCollectorChanged(address indexed oldFeeCollector, address indexed newFeeCollector);
-  event TokenURIChanged(
-    string indexed oldTokenURI,
-    string indexed newTokenURI,
-    string fileExtension
-  );
+  event TokenURIChanged(string indexed oldTokenURI, string indexed newTokenURI);
   event TokenURILocked(bool indexed newState);
 
   /**
    * Mint / bridge / claim
    */
   event ONFTMinted(address indexed minter, uint256 indexed itemId, uint256 feeEarnings);
-
   event BridgeFeeEarned(address indexed from, uint16 indexed dstChainId, uint256 amount);
-
   event FeeEarningsClaimed(address indexed collector, uint256 claimedAmount);
-
-  /***************
-   *   CONSTANTS  *
-   ***************/
-  uint256 public constant ONE_HUNDRED_PERCENT = 10000; // 100%
-  uint256 public constant FIFTY_PERCENT = 5000; // 50%
-  uint256 public constant DENOMINATOR = ONE_HUNDRED_PERCENT; // 100%
 
   /***********************
    *   VARIABLES / STATES *
@@ -91,7 +78,6 @@ contract OmniGraph is ONFT721, ERC721Enumerable {
   uint256 public feeClaimedAmount;
 
   /// TOKEN URI ///
-  string private _tokenURIExtension;
   string private _tokenBaseURI;
   bool public tokenBaseURILocked;
 
@@ -128,10 +114,10 @@ contract OmniGraph is ONFT721, ERC721Enumerable {
 
     startMintId = _startMintId;
     maxMintId = _endMintId;
+    tokenCounter = _startMintId;
+    feeCollector = _msgSender();
     mintFee = 0;
     bridgeFee = 0;
-    feeCollector = msg.sender;
-    tokenCounter = _startMintId;
   }
 
   /***********************
@@ -178,19 +164,14 @@ contract OmniGraph is ONFT721, ERC721Enumerable {
   /**
    * @notice ADMIN Change base URI
    * @param _newTokenBaseURI new URI
-   * @param _fileExtension file extension in format ".<ext>"
    *
    * @dev emits {OmniGraph-TokenURIChanged}
    */
-  function setTokenBaseURI(
-    string calldata _newTokenBaseURI,
-    string calldata _fileExtension
-  ) external onlyOwner {
+  function setTokenBaseURI(string calldata _newTokenBaseURI) external onlyOwner {
     _validate(!tokenBaseURILocked, ERROR_INVALID_URI_LOCK_STATE);
     string memory oldTokenBaseURI = _tokenBaseURI;
     _tokenBaseURI = _newTokenBaseURI;
-    _tokenURIExtension = _fileExtension;
-    emit TokenURIChanged(oldTokenBaseURI, _newTokenBaseURI, _fileExtension);
+    emit TokenURIChanged(oldTokenBaseURI, _newTokenBaseURI);
   }
 
   /**
@@ -206,14 +187,14 @@ contract OmniGraph is ONFT721, ERC721Enumerable {
   }
 
   /**
-   * @notice Retrieving token URI by its ID
+   * @notice Retrieving token URI by its ID (for this contract all IDs have same URI)
    * @param tokenId identifier of the token
    *
    * @dev emits {OmniGraph-TokenURILocked}
    */
   function tokenURI(uint256 tokenId) public view override returns (string memory) {
     _validate(_exists(tokenId), ERROR_INVALID_TOKEN_ID);
-    return string(abi.encodePacked(_tokenBaseURI, Strings.toString(tokenId), _tokenURIExtension));
+    return string(abi.encodePacked(_tokenBaseURI));
   }
 
   /************
